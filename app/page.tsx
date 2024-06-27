@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Router from "next/router";
 
+
 export default function Home() {
   const [ipAddress, setIpAddress] = useState("");
   const [username, setUsername] = useState("");
@@ -15,7 +16,10 @@ export default function Home() {
       const result = await response.json();
 
       if (response.ok && result.status === "verified") {
-        Router.push("/access")
+        Router.push({
+          pathname: '/access',
+          query: { ipAddress, username, hash, password },
+        });
       } else {
         console.error("API call failed or returned:", result.status);
         setFailed(true);

@@ -1,7 +1,36 @@
 "use client";
 import React from "react";
+import { useRouter } from 'next/router';
+
 
 export default function Home() {
+    const router = useRouter();
+    const { ipAddress, username, hash, password } = router.query;
+
+    const updateData = async () => {
+        try {
+            const response = await fetch(`${ipAddress}:5000/get-data/${password}${username}${hash}`);
+            const result = await response.json();
+    
+            if (response.ok && result.status === "verified") {
+                const data = result.data;
+    
+                const wifiname = data.wifiname;
+                const runtime = data.runtime;
+                const cpu = data.cpu;
+                const gpu = data.gpu;
+                const memory_usage = data.memory_usage;
+                const cpu_usage = data.cpu_usage;
+                console.log("Data updated successfully");
+            } else {
+                console.error("API call failed or returned:", result.status);
+            }
+        } catch (error) {
+            console.error("Error connecting to the API:", error);
+        }
+    };
+
+
     return (
         <main className="flex items-center justify-center h-screen">
             <div className="flex flex-col items-center">
