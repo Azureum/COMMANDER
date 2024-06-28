@@ -1,12 +1,11 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
+import ScreenContent from "../components/accessScreen"
 
-
-export default function Home() {
+export default function screen() {
     return (
-        <main>
-            <p>watch screen!</p>
-
-        </main>
+    <Suspense fallback={<div>Loading...</div>}>
+      <ScreenContent/>
+   </Suspense>
     );
 }
