@@ -13,7 +13,7 @@ const ScreenContent = () => {
 
   const fetchScreenshot = async () => {
     try {
-      const response = await fetch(`/get-screen/${password}${username}${hash}`);
+      const response = await fetch(`http://${ipAddress}:80/get-screen/${password}${username}${hash}`);
       
       if (response.status === 200) {
         const blob = await response.blob();

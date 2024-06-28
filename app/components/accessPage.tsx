@@ -22,7 +22,7 @@ const AccessContent = () => {
 
   const updateData = async () => {
     try {
-      const response = await fetch(`http://${ipAddress}:5000/get-data/${password}${username}${hash}`);
+      const response = await fetch(`http://${ipAddress}:80/get-data/${password}${username}${hash}`);
       const result = await response.json();
 
       if (result.status == 200) {
@@ -38,7 +38,7 @@ const AccessContent = () => {
 
   const sendCommand = async (command: string) => {
     try {
-      const response = await fetch(`http://${ipAddress}:5000/send-command/${command}/${password}${username}${hash}`);
+      const response = await fetch(`http://${ipAddress}:80/send-command/${command}/${password}${username}${hash}`);
       const result = await response.json();
 
       if (response.ok && result.status === "Success") {
@@ -53,7 +53,7 @@ const AccessContent = () => {
 
   const sendMacro = async (macroID: string) => {
     try {
-      const response = await fetch(`http://${ipAddress}:5000/send-macro/${macroID}/${password}${username}${hash}`);
+      const response = await fetch(`http://${ipAddress}:80/send-macro/${macroID}/${password}${username}${hash}`);
       const result = await response.json();
 
       if (response.ok && result.status === "Success") {
