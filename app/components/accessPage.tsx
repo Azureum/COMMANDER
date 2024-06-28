@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const AccessContent = () => {
   const searchParams = useSearchParams();
@@ -9,6 +10,7 @@ const AccessContent = () => {
   const hash = searchParams.get('hash');
   const [loopOn, setLoopOn] = useState(true);
   const [commandStatus, setCommandStatus] = useState('________________');
+  const router = useRouter();
 
   const [data, setData] = useState({
     wifiname: '',
@@ -27,7 +29,7 @@ const AccessContent = () => {
 
       if (result.status == 200) {
         setData(result.data);
-        console.log("Data updated successfully");
+        console.log("Data updated successfully:", result.data);
       } else {
         console.error("API call failed or returned:", result.status);
       }
@@ -55,7 +57,6 @@ const AccessContent = () => {
     try {
       const response = await fetch(`http://${ipAddress}:80/send-macro/${macroID}/${password}${username}${hash}`);
       const result = await response.json();
-
       if (response.ok && result.status === "Success") {
         setCommandStatus("MACRO SUCCESS");
       } else {
@@ -67,13 +68,16 @@ const AccessContent = () => {
   }
 
   useEffect(() => {
-    updateData();
-    const intervalId = setInterval(updateData, 500);
+    const intervalId = setInterval(updateData, 600);
     return () => clearInterval(intervalId);
   }, []);
 
   const loopToggle = () => {
     setLoopOn(prevLoopOn => !prevLoopOn);
+  };
+
+  const nextPage = () => {
+    router.push(`/watchscreen?ip=${ipAddress}&username=${username}&hash=${hash}&password=${password}`);
   };
 
   return (
@@ -147,7 +151,7 @@ const AccessContent = () => {
           <button className="col-span-2  shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400" onClick={loopToggle}>
             Toggle Loop
           </button>
-          <button className="col-span-2 shadow-[0_0_0_3px_#000000_inset] px-1 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400">
+          <button className="col-span-2 shadow-[0_0_0_3px_#000000_inset] px-1 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400" onClick={nextPage}>
             View Screen
           </button>
         </div>

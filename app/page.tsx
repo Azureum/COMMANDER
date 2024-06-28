@@ -16,7 +16,7 @@ export default function Home() {
       const response = await fetch(`http://${ipAddress}:80/${password}${username}${hash}`);
       const result = await response.json();
 
-      if (response.ok && result.status === "verified") {
+      if (response.ok && result.status == "verified") {
         router.push(`/access?ip=${ipAddress}&username=${username}&hash=${hash}&password=${password}`);
       } else {
         console.error("API call failed or returned:", result.status);
