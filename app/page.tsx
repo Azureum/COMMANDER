@@ -13,7 +13,7 @@ export default function Home() {
 
   const verify = async () => {
     try {
-      const response = await fetch(`${ipAddress}:5000/${password}${username}${hash}`);
+      const response = await fetch(`$http://${ipAddress}:5000/${password}${username}${hash}`);
       const result = await response.json();
 
       if (response.ok && result.status === "verified") {

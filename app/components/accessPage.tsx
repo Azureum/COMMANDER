@@ -8,6 +8,7 @@ const AccessContent = () => {
   const password = searchParams.get('password');
   const hash = searchParams.get('hash');
   const [loopOn, setLoopOn] = useState(true);
+  const [commandStatus, setCommandStatus] = useState('________________');
 
   const [data, setData] = useState({
     wifiname: '',
@@ -24,7 +25,7 @@ const AccessContent = () => {
       const response = await fetch(`http://${ipAddress}:5000/get-data/${password}${username}${hash}`);
       const result = await response.json();
 
-      if (response.ok && result.status === "verified") {
+      if (result.status == 200) {
         setData(result.data);
         console.log("Data updated successfully");
       } else {
@@ -34,6 +35,36 @@ const AccessContent = () => {
       console.error("Error connecting to the API:", error);
     }
   };
+
+  const sendCommand = async (command: string) => {
+    try {
+      const response = await fetch(`http://${ipAddress}:5000/send-command/${command}/${password}${username}${hash}`);
+      const result = await response.json();
+
+      if (response.ok && result.status === "Success") {
+        setCommandStatus("COMMAND SUCCESS");
+      } else {
+        setCommandStatus("COMMAND FAILURE");
+      }
+    } catch (error) {
+      setCommandStatus("COMMAND ERROR");
+    }
+  }
+
+  const sendMacro = async (macroID: string) => {
+    try {
+      const response = await fetch(`http://${ipAddress}:5000/send-macro/${macroID}/${password}${username}${hash}`);
+      const result = await response.json();
+
+      if (response.ok && result.status === "Success") {
+        setCommandStatus("MACRO SUCCESS");
+      } else {
+        setCommandStatus("MACRO FAILURE");
+      }
+    } catch (error) {
+      setCommandStatus("MACRO ERROR");
+    }
+  }
 
   useEffect(() => {
     updateData();
@@ -82,18 +113,23 @@ const AccessContent = () => {
             </div>
           </div>
         </div>
+        <div className="flex flex-col items-center">
+          <div className="w-full p-4 mb-3 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
+             Command Status:  {commandStatus}            
+          </div>
+        </div>
         {/* Buttons */}
         <div className="grid grid-cols-2 gap-2">
-          <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400">
+          <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400" onClick={() => sendCommand("shutdown")}>
+          Shutdown PC
+          </button>
+          <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400" onClick={() => sendCommand("restart")}>
             Restart PC
           </button>
-          <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400">
+          <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400" onClick={() => sendCommand("wifirestart")}>
             Restart Wifi
           </button>
-          <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400">
-            Shutdown PC
-          </button>
-          <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400">
+          <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400" onClick={() => sendCommand("sleep")}>
             Turn Off Screen
           </button>
           <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400">
