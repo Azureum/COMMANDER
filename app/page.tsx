@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
-import Router from "next/router";
-
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [ipAddress, setIpAddress] = useState("");
@@ -10,16 +9,15 @@ export default function Home() {
   const [hash, setHash] = useState("");
   const [password, setPassword] = useState("");
   const [failed, setFailed] = useState(false); 
+  const router = useRouter();
+
   const verify = async () => {
     try {
       const response = await fetch(`${ipAddress}:5000/${password}${username}${hash}`);
       const result = await response.json();
 
       if (response.ok && result.status === "verified") {
-        Router.push({
-          pathname: '/access',
-          query: { ipAddress, username, hash, password },
-        });
+        router.push(`/access?ip=${ipAddress}&username=${username}&hash=${hash}&password=${password}`);
       } else {
         console.error("API call failed or returned:", result.status);
         setFailed(true);
@@ -29,6 +27,7 @@ export default function Home() {
       setFailed(true);
     }
   };
+
 
   return (
     <main className="flex items-center justify-center h-screen">
