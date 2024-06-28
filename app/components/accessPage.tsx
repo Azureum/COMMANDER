@@ -68,7 +68,7 @@ const AccessContent = () => {
 
   useEffect(() => {
     updateData();
-    const intervalId = setInterval(updateData, 1000);
+    const intervalId = setInterval(updateData, 500);
     return () => clearInterval(intervalId);
   }, []);
 

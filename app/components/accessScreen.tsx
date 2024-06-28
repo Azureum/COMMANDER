@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import screen from "../../public/Screenshot 2024-06-28 050017.png";
 
 const ScreenContent = () => {
   const searchParams = useSearchParams();
@@ -33,7 +32,9 @@ const ScreenContent = () => {
 
   useEffect(() => {
     fetchScreenshot();
-  });
+    const intervalId = setInterval(fetchScreenshot, 100);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <main className="flex items-center justify-center h-screen">
