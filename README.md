@@ -7,8 +7,8 @@ Commander is an application that allows you to access your computer from the con
 ## How to use? 
 - Download Python, search up tutorial on youtube
 - Download from my repos CommanderUI, and Commander (Don't need unless local) . Commander is the webapp and CommanderUI is the python app.
-- ** For Commander you need to install NPM and Node.JS (Search up tutorial) **
-- ** Install the NPM packages **
+- **For Commander you need to install NPM and Node.JS (Search up tutorial)**
+- **Install the NPM packages**
 
 ## Local (In your house)
 - If you are accessing this locally you don't need to do much all you need to do is run app.py
