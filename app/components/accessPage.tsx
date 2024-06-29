@@ -58,7 +58,7 @@ const AccessContent = () => {
 
   const sendMacro = async (macroID: string) => {
     try {
-      const response = await fetch(`http://${ipAddress}:80/send-macro/${macroID}/${password}${username}${hash}`);
+      const response = await fetch(`http://${ipAddress}:80/send-macro/${macroID}/${loopOn}/${password}${username}${hash}`);
       const result = await response.json();
       if (response.ok && result.status === "Success") {
         setCommandStatus("MACRO SUCCESS");
